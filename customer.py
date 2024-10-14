@@ -36,6 +36,16 @@ class Customer:
         total_amount = 0   # total rental charges
         frequent_renter_points = 0
         # the .format method substitutes actual values into the fmt string
+        statement = self.get_price(total_amount, frequent_renter_points)
+
+        return statement
+
+    def get_price(self, total_amount, frequent_renter_points):
+        """Calculate movie price for statement
+        
+        Return:
+            statement as a string.
+        """
         statement = f"Rental Report for {self.name}\n\n"
         header_fmt = "{:40s}  {:6s} {:6s}\n"
         statement += header_fmt.format("Movie Title", "  Days", " Price")
@@ -80,5 +90,4 @@ class Customer:
         statement += "{:40s}  {:6s} {:6.2f}\n".format(
                        "Total Charges", "", total_amount)
         statement += "Frequent Renter Points earned: {}\n".format(frequent_renter_points)
-
         return statement

@@ -36,3 +36,4 @@ class CustomerTest(unittest.TestCase):
     	matches = re.match(pattern, stmt.replace('\n',''), flags=re.DOTALL)
     	self.assertIsNotNone(matches)
     	self.assertEqual("12.00", matches[1])
+
