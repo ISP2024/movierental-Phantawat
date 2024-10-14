@@ -28,6 +28,10 @@ class Customer:
         """Calculate total charges for all rentals."""
         return sum(rental.get_price() for rental in self.rentals)
     
+    def total_rental_points(self):
+        """Calculate total frequent renter points for all rentals."""
+        return sum(rental.get_rental_points() for rental in self.rentals)
+    
     def statement(self):
         """Create a statement of rentals for the current period.
 
@@ -45,8 +49,6 @@ class Customer:
         
         for rental in self.rentals:
             amount = rental.get_price()
-            total_amount += amount
-            frequent_renter_points += rental.rental_points()
             
             rental_fmt = "{:40s}  {:6d} {:6.2f}\n"
             statement += rental_fmt.format(
@@ -56,7 +58,8 @@ class Customer:
             )
 
         # footer: summary of charges
-        total_amount = self.total_change()
+        total_amount = self.total_charge()
+        frequent_renter_points = self.total_rental_points()
         statement += "\n"
         statement += "{:40s}  {:6s} {:6.2f}\n".format("Total Charges", "", total_amount)
         statement += "Frequent Renter Points earned: {}\n".format(frequent_renter_points)

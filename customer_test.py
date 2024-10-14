@@ -5,7 +5,7 @@ from rental import Rental
 from movie import Movie
 
 class CustomerTest(unittest.TestCase): 
-    """ Tests of the Customer class"""
+	""" Tests of the Customer class"""
 
 	def setUp(self):
 		"""Test fixture contains:
@@ -54,3 +54,21 @@ class CustomerTest(unittest.TestCase):
 		actual_total = self.c.total_charge()
 		
 		self.assertEqual(actual_total, expected_total)
+
+	def test_total_rental_points(self):
+        
+        # Create rentals with different prices and points
+		regular_rental = Rental(self.regular_movie, days_rented=3)  # Should earn 1 point
+		children_rental = Rental(self.childrens_movie, days_rented=4)  # Should earn 1 point
+		new_release_rental = Rental(self.new_movie, days_rented=2)  # Should earn 2 points
+		
+		# Add rentals to customer
+		self.c.add_rental(regular_rental)
+		self.c.add_rental(children_rental)
+		self.c.add_rental(new_release_rental)
+
+		# Calculate total rental points
+		expected_points = 1 + 1 + 2  # Total should be 4 points
+		actual_points = self.c.total_rental_points()
+		
+		self.assertEqual(actual_points, expected_points)
