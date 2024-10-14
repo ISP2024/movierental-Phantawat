@@ -41,9 +41,9 @@ class Customer:
         statement += header_fmt.format("Movie Title", "Days", "Price")
         
         for rental in self.rentals:
-            amount, points = rental.get_price()
+            amount = rental.get_price()
             total_amount += amount
-            frequent_renter_points += points
+            frequent_renter_points += rental.rental_points()
             
             rental_fmt = "{:40s}  {:6d} {:6.2f}\n"
             statement += rental_fmt.format(
