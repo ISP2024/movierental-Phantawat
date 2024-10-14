@@ -52,21 +52,21 @@ class RentalTest(unittest.TestCase):
 
 	def test_rental_points_regular(self):
 		rental = Rental(self.regular_movie, days_rented=3)
-		points = rental.rental_points()
+		points = rental.get_rental_points()
 		
 		# Regular movies should earn only 1 point regardless of days rented
 		self.assertEqual(points, 1)
 
 	def test_rental_points_children(self):
 		rental = Rental(self.childrens_movie, days_rented=4)
-		points = rental.rental_points()
+		points = rental.get_rental_points()
 		
 		# Children's movies should earn only 1 point regardless of days rented
 		self.assertEqual(points, 1)
 
 	def test_rental_points_new_release(self):
 		rental = Rental(self.new_movie, days_rented=2)
-		points = rental.rental_points()
+		points = rental.get_rental_points()
 		
 		# New release earns points equal to days rented
 		self.assertEqual(points, 2)
