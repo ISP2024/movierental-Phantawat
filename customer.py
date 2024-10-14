@@ -24,6 +24,10 @@ class Customer:
         """Get the customer's name."""
         return self.name
     
+    def total_charge(self):
+        """Calculate total charges for all rentals."""
+        return sum(rental.get_price() for rental in self.rentals)
+    
     def statement(self):
         """Create a statement of rentals for the current period.
 
@@ -33,7 +37,6 @@ class Customer:
         Returns:
             the statement as a String
         """
-        total_amount = 0   # total rental charges
         frequent_renter_points = 0
         statement = f"Rental Report for {self.name}\n\n"
         
@@ -53,6 +56,7 @@ class Customer:
             )
 
         # footer: summary of charges
+        total_amount = self.total_change()
         statement += "\n"
         statement += "{:40s}  {:6s} {:6.2f}\n".format("Total Charges", "", total_amount)
         statement += "Frequent Renter Points earned: {}\n".format(frequent_renter_points)
