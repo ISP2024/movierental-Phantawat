@@ -1,5 +1,63 @@
+import csv
+import logging
 from dataclasses import dataclass, field
-from typing import Collection
+from typing import Collection, List, Optional
+
+
+class MovieCatalog:
+    """A singleton class to encapsulate and manage movie creation from a CSV file."""
+    
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(MovieCatalog, cls).__new__(cls)
+        return cls._instance
+
+    def __init__(self, movie_file: str = "movies.csv"):
+        if not hasattr(self, "_movies"):
+            self._movies = {}
+            self._load_movies(movie_file)
+
+    def _load_movies(self, movie_file: str):
+        """Load movies from a CSV file into the catalog."""
+        try:
+            with open(movie_file, 'r', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                for line_num, row in enumerate(reader, start=1):
+                    # Ignore blank lines and comments
+                    if not row or row[0].startswith('#'):
+                        continue
+
+                    try:
+                        movie_id, title, year, genres = row
+                        year = int(year)
+                        genre_list = genres.split('|')
+                        movie = Movie(title, year, genre_list)
+                        
+                        # Store in dictionary using (title, year) as key
+                        if (title.lower(), year) not in self._movies:
+                            self._movies[(title.lower(), year)] = movie
+                        else:
+                            logging.warning(f"Duplicate movie '{title}' ({year}) on line {line_num}")
+
+                    except ValueError as e:
+                        logging.error(f"Invalid data on line {line_num}: {row} - {str(e)}")
+
+        except FileNotFoundError:
+            logging.error(f"Movie file '{movie_file}' not found.")
+
+    def get_movie(self, title: str, year: Optional[int] = None) -> Optional[Movie]:
+        """Retrieve a movie by title and optional year."""
+        if year:
+            return self._movies.get((title.lower(), year))
+        else:
+            # Find the first movie that matches the title
+            for (movie_title, _), movie in self._movies.items():
+                if movie_title == title.lower():
+                    return movie
+        return None
+    
 
 @dataclass(frozen=True)
 class Movie:
