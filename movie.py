@@ -1,7 +1,8 @@
 import csv
 import logging
 from dataclasses import dataclass, field
-from typing import Collection, List, Optional
+from typing import Collection, Optional
+from datetime import datetime
 
 
 class MovieCatalog:
@@ -73,3 +74,19 @@ class Movie:
     def __str__(self):
         """Return a string representation of the movie as 'Title (year)'."""
         return f"{self.title} ({self.year})"
+    
+
+NEW_RELEASE = "New Release"
+CHILDRENS = "Childrens"
+REGULAR = "Regular"
+
+def price_code_for_movie(movie: Movie) -> str:
+    """Determine the price code for a movie based on its release year and genre."""
+    current_year = datetime.now().year
+
+    if movie.year == current_year:
+        return NEW_RELEASE
+    elif movie.is_genre("Children") or movie.is_genre("Childrens"):
+        return CHILDRENS
+    else:
+        return REGULAR

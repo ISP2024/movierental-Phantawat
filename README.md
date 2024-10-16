@@ -32,3 +32,12 @@ See [Resources](https://cpske.github.io/ISP/assignment/movierental/movierental-p
 - **Encapsulation**: By moving the `price_code` and pricing logic into `Rental`, we encapsulate the logic where it is most relevant. This reduces unnecessary interactions between `Rental` and `Movie`, leading to a more cohesive design.
 - **Tell, Don’t Ask**: The refactoring encourages the `Rental` class to perform actions directly related to rental pricing without needing to ask for information from `Movie`. This helps in reducing the dependency between the two classes, following the principle that objects should be responsible for their own data.
 
+### 5.1 Where `price_code_for_movie` is Implemented and Why?
+- **Location**: The `price_code_for_movie` function is implemented as a top-level function in the `movie` module.
+  
+- **Rationale**:
+  - **Information Expert**: The `Movie` class contains the `year` and `genre` information needed to determine the price code, making the `movie` module a suitable place for the function.
+  - **Single Responsibility Principle**: The responsibility of determining the pricing code logically fits with the `Movie` details, which are tied to the movie's release year and genre.
+  - **Low Coupling**: Placing the function in the `movie` module avoids adding unnecessary dependencies between `Rental` and the pricing rules, making the design more flexible and maintainable.
+  - **High Cohesion**: This approach groups all movie-related logic together, ensuring that the `movie` module maintains a focused and cohesive purpose.
+  
