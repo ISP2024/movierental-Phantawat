@@ -26,8 +26,10 @@ class Rental:
 
    def get_price(self):
       """Calculate movie price for statement."""
-      return self.movie.get_price(self.days_rented)
+      price_strategy = self.movie.get_price_strategy()
+      return price_strategy.get_price(self.days_rented)
 
    def get_rental_points(self):
       """Calculate frequent renter points for this rental."""
-      return self.movie.get_rental_points(self.days_rented)
+      price_strategy = self.movie.get_price_strategy()
+      return price_strategy.get_rental_points(self.days_rented)
