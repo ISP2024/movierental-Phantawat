@@ -5,6 +5,38 @@ from typing import Collection, Optional
 from datetime import datetime
 
 
+@dataclass(frozen=True)
+class Movie:
+    """A movie that can be rented."""
+    title: str
+    year: int
+    genre: Collection[str] = field(default_factory=list)
+    
+    def is_genre(self, genre_name: str) -> bool:
+        """Check if the movie belongs to the given genre (case-insensitive)."""
+        return genre_name.lower() in (g.lower() for g in self.genre)
+    
+    def __str__(self):
+        """Return a string representation of the movie as 'Title (year)'."""
+        return f"{self.title} ({self.year})"
+    
+
+NEW_RELEASE = "New Release"
+CHILDRENS = "Childrens"
+REGULAR = "Regular"
+
+def price_code_for_movie(movie: Movie) -> str:
+    """Determine the price code for a movie based on its release year and genre."""
+    current_year = datetime.now().year
+
+    if movie.year == current_year:
+        return NEW_RELEASE
+    elif movie.is_genre("Children") or movie.is_genre("Childrens"):
+        return CHILDRENS
+    else:
+        return REGULAR
+
+
 class MovieCatalog:
     """A singleton class to encapsulate and manage movie creation from a CSV file."""
     
@@ -58,35 +90,3 @@ class MovieCatalog:
                 if movie_title == title.lower():
                     return movie
         return None
-    
-
-@dataclass(frozen=True)
-class Movie:
-    """A movie that can be rented."""
-    title: str
-    year: int
-    genre: Collection[str] = field(default_factory=list)
-    
-    def is_genre(self, genre_name: str) -> bool:
-        """Check if the movie belongs to the given genre (case-insensitive)."""
-        return genre_name.lower() in (g.lower() for g in self.genre)
-    
-    def __str__(self):
-        """Return a string representation of the movie as 'Title (year)'."""
-        return f"{self.title} ({self.year})"
-    
-
-NEW_RELEASE = "New Release"
-CHILDRENS = "Childrens"
-REGULAR = "Regular"
-
-def price_code_for_movie(movie: Movie) -> str:
-    """Determine the price code for a movie based on its release year and genre."""
-    current_year = datetime.now().year
-
-    if movie.year == current_year:
-        return NEW_RELEASE
-    elif movie.is_genre("Children") or movie.is_genre("Childrens"):
-        return CHILDRENS
-    else:
-        return REGULAR

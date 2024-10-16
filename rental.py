@@ -1,6 +1,6 @@
 import logging
 from pricing import *
-from movie import Movie
+from movie import Movie, price_code_for_movie
 
 class Rental:
    """
@@ -19,7 +19,7 @@ class Rental:
       """
       self.movie = movie
       self.days_rented = days_rented
-      self.price_code = price_code
+      self.price_code = price_code_for_movie(movie)
       self.price_strategy = self._set_price_strategy()
 
    def _set_price_strategy(self):
